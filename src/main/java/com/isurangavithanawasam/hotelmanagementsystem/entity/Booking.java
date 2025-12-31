@@ -40,6 +40,7 @@ public class Booking {
     private User user;
 
     public void calculateTotalNumberOfGuest(){
+
         this.totalNumOfGuest = this.numOfAdults + this.numOfChildren;
     }
 
