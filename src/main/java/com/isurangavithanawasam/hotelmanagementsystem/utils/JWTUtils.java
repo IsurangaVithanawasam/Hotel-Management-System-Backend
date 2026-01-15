@@ -2,6 +2,7 @@ package com.isurangavithanawasam.hotelmanagementsystem.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,9 @@ public class JWTUtils {
 
     public JWTUtils(){
 
-        String secretString = "4261656C64756E674261656C64756E674261656C64756E67";
+        String secretString = "dY3L9q8e8c0s1kQZf3M8zv5P8Kp+V0h1y4E2R3W7X9U=";
         byte[] keyBytes = Base64.getDecoder().decode(secretString.getBytes(StandardCharsets.UTF_8));
-        this.Key = new SecretKeySpec(keyBytes, "HmacSHA1");
+        this.Key = new SecretKeySpec(keyBytes, "HmacSHA256");
     }
 
     public String generateToken(UserDetails userDetails){
@@ -32,10 +33,9 @@ public class JWTUtils {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(Key)
+                .signWith(Key, SignatureAlgorithm.HS256)
                 .compact();
     }
-
     public String extractUsername(String token){
         return extractClaims(token, Claims::getSubject);
     }
